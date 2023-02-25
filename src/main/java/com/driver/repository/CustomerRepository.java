@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.driver.model.Customer;
 
+import java.util.List;
+
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
+    @Override
+    List<Customer> findAll();
 }
