@@ -72,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 		Cab cab = tripBooking.getDriver().getCab();
-		if(!cab.isAvailable()){
+		if(!cab.getAvailable()){
 			throw new Exception("No cab Available");
 		}
 
