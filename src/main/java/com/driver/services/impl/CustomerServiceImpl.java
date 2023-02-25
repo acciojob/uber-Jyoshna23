@@ -95,6 +95,9 @@ public class CustomerServiceImpl implements CustomerService {
 	public void cancelTrip(Integer tripId){
 		//Cancel the trip having given trip Id and update TripBooking attributes accordingly
 
+//		Customer customer = customerRepository2.findById(tripId);
+//		List<TripBooking> tripBookingList =
+
 	}
 
 	@Override
