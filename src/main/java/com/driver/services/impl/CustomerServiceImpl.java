@@ -49,22 +49,23 @@ public class CustomerServiceImpl implements CustomerService {
 		//Avoid using SQL query
 
 		TripBooking tripBooking = new TripBooking();
+		Driver driver = null;
 
 		//Here I am fetching the driverlist, so that I can check which driver has lowest driverId
 		List<Driver> driverList = driverRepository2.findAll();
 
 		//checking for lowest driverid
 		int minDriverId = Integer.MAX_VALUE;
-		for(Driver driver : driverList){
-			if(driver.getDriverId() < minDriverId){
-				minDriverId = driver.getDriverId();
+		for(Driver driver1 : driverList){
+			if(driver1.getDriverId() < minDriverId){
+				minDriverId = driver1.getDriverId();
 			}
 		}
 
 		//Setting the driver to the trip
-		for(Driver driver : driverList){
-			if(driver.getDriverId() == minDriverId){
-				tripBooking.setDriver(driver);
+		for(Driver driver1 : driverList){
+			if(driver1.getDriverId() == minDriverId){
+				tripBooking.setDriver(driver1);
 				List<TripBooking> tripBookingList = driver.getTripBookingList();
 				tripBookingList.add(tripBooking);
 			}
@@ -72,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 		Cab cab = tripBooking.getDriver().getCab();
-		if(!cab.getAvailable()){
+		if(!cab.getAvailable() || driver == null){
 			throw new Exception("No cab Available");
 		}
 
@@ -84,6 +85,17 @@ public class CustomerServiceImpl implements CustomerService {
 			}
 		}
 
+		Customer customer = customerRepository2.findById(customerId).get();
+		tripBooking.setCustomer(customer);
+		tripBooking.setFromLocation(fromLocation);
+		tripBooking.setToLocation(toLocation);
+		tripBooking.setDistanceInKm(distanceInKm);
+		int bill = tripBooking.getDriver().getCab().getPerKmRate()*tripBooking.getDistanceInKm();
+		tripBooking.setBill(bill);
+		tripBooking.setStatus(TripStatus.CONFIRMED);
+
+		customerRepository2.save(customer);
+		driverRepository2.save(driver);
 		tripBookingRepository2.save(tripBooking);
 
 

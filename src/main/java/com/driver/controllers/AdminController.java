@@ -20,14 +20,16 @@ public class AdminController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Void> registerAdmin(@RequestBody Admin admin){
-		adminService.adminRegister(admin);
-		return new ResponseEntity<>(HttpStatus.OK);
+
+			adminService.adminRegister(admin);
+			return new ResponseEntity<>(HttpStatus.OK);
+
 	}
 
 	@PutMapping("/update")
 	public ResponseEntity<Admin> updateAdminPassword(@RequestParam Integer adminId, @RequestParam String password){
-		Admin updatedAdmin = adminService.updatePassword(adminId,password);
-		return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
+				Admin updatedAdmin = adminService.updatePassword(adminId, password);
+				return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete")

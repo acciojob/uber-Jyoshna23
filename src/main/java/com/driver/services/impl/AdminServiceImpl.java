@@ -35,15 +35,25 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin updatePassword(Integer adminId, String password) {
-		//Update the password of admin with given id
+		//		//Update the password of admin with given id
 
 
 		//First am fetching the details of the admin with admin id
-		Admin admin = adminRepository1.findById(adminId).get();
 
-		admin.setPassword(password);
+		Admin admin = null;
+		try {
+			admin = adminRepository1.findById(adminId).get();
+			if (admin == null) {
+				throw new AdminNotFoundException("admin not found in the database.");
+			}
+			admin.setPassword(password);
 
-		adminRepository1.save(admin);
+			adminRepository1.save(admin);
+
+		} catch (Exception e) {
+			System.out.println("Admin Id is null");
+		}
+
 		return admin;
 
 	}
@@ -75,4 +85,9 @@ public class AdminServiceImpl implements AdminService {
 		return customerList;
 	}
 
+}
+class AdminNotFoundException extends Exception {
+	AdminNotFoundException(String s) {
+		super(s);
+	}
 }

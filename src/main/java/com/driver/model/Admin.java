@@ -50,3 +50,6 @@ public class Admin{
         this.password = password;
     }
 }
+class AdminNotFoundException extends Exception {
+
+}
