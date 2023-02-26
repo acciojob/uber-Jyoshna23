@@ -39,20 +39,9 @@ public class AdminServiceImpl implements AdminService {
 
 
 		//First am fetching the details of the admin with admin id
-
-		Admin admin = null;
-		try {
-			admin = adminRepository1.findById(adminId).get();
-			if (admin == null) {
-				throw new Exception("admin not found in the database.");
-			}
-			admin.setPassword(password);
-
-			adminRepository1.save(admin);
-
-		} catch (Exception e) {
-			System.out.println("Admin Id is null");
-		}
+		Admin admin = adminRepository1.findById(adminId).get();
+		admin.setPassword(password);
+		adminRepository1.save(admin);
 
 		return admin;
 
@@ -73,16 +62,16 @@ public class AdminServiceImpl implements AdminService {
 
 
 		// Here I created an abstract method List<Driver> findAll() in Driver repository
-		List<Driver> driverList = driverRepository1.findAll();
-		return driverList;
+		List<Driver> listOfDrivers = driverRepository1.findAll();
+		return listOfDrivers;
 	}
 
 	@Override
 	public List<Customer> getListOfCustomers() {
 		//Find the list of all customers
 
-		List<Customer> customerList = customerRepository1.findAll();
-		return customerList;
+		List<Customer> listOfCustomers = customerRepository1.findAll();
+		return listOfCustomers;
 	}
 
 }

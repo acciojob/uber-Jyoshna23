@@ -28,9 +28,6 @@ public class CustomerServiceImpl implements CustomerService {
 	public void register(Customer customer) {
 		//Save the customer in database
 
-		List<Customer> customerList = new ArrayList<>();
-		customerList.add(customer);
-
 		customerRepository2.save(customer);
 	}
 
