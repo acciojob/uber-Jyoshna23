@@ -78,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 
 		if( driver == null){
-			throw new Exception("No cab Available");
+			throw new Exception("No cab available!");
 		}
 
 //		List<Customer> customerList = customerRepository2.findAll();
