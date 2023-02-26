@@ -52,51 +52,58 @@ public class CustomerServiceImpl implements CustomerService {
 		List<Driver> driverList = driverRepository2.findAll();
 
 		//checking for lowest driverid
-		int minDriverId = Integer.MAX_VALUE;
+//		int minDriverId = Integer.MAX_VALUE;
+//		for(Driver driver1 : driverList){
+//			if(driver1.getDriverId() < minDriverId){
+//				minDriverId = driver1.getDriverId();
+//			}
+//		}
+//
+//		//Setting the driver to the trip
+//		for(Driver driver1 : driverList){
+//			if(driver1.getDriverId() == minDriverId){
+//				tripBooking.setDriver(driver1);
+//				List<TripBooking> tripBookingList = driver.getTripBookingList();
+//				driver1.getTripBookingList().add(tripBooking);
+//				driver1.getCab().setAvailable(Boolean.FALSE);
+//			}
+//		}
+
 		for(Driver driver1 : driverList){
-			if(driver1.getDriverId() < minDriverId){
-				minDriverId = driver1.getDriverId();
+			if(driver1.getCab().getAvailable() == true){
+				if(driver == null || driver.getDriverId() > driver1.getDriverId()){
+					driver = driver1;
+				}
 			}
 		}
 
-		//Setting the driver to the trip
-		for(Driver driver1 : driverList){
-			if(driver1.getDriverId() == minDriverId){
-				tripBooking.setDriver(driver1);
-				List<TripBooking> tripBookingList = driver.getTripBookingList();
-				driver1.getTripBookingList().add(tripBooking);
-				driver1.getCab().setAvailable(Boolean.FALSE);
-			}
-		}
-
-
-
-		Cab cab = tripBooking.getDriver().getCab();
-		if(!cab.getAvailable() || driver == null){
+		if( driver == null){
 			throw new Exception("No cab Available");
 		}
 
-		List<Customer> customerList = customerRepository2.findAll();
-		for(Customer customer : customerList){
-			if(customer.getCustomerId() == customerId){
-				List<TripBooking> tripBookingList = customer.getTripBookingList();
-				customer.getTripBookingList().add(tripBooking);
-			}
-		}
+//		List<Customer> customerList = customerRepository2.findAll();
+//		for(Customer customer : customerList){
+//			if(customer.getCustomerId() == customerId){
+//				List<TripBooking> tripBookingList = customer.getTripBookingList();
+//				customer.getTripBookingList().add(tripBooking);
+//			}
+//		}
 
 		Customer customer = customerRepository2.findById(customerId).get();
 		tripBooking.setCustomer(customer);
+		tripBooking.setDriver(driver);
+		driver.getCab().setAvailable(false);
 		tripBooking.setFromLocation(fromLocation);
 		tripBooking.setToLocation(toLocation);
 		tripBooking.setDistanceInKm(distanceInKm);
-		int bill = tripBooking.getDriver().getCab().getPerKmRate()*tripBooking.getDistanceInKm();
-		tripBooking.setBill(bill);
+		int rateForKm  =driver.getCab().getPerKmRate();
+		tripBooking.setBill(distanceInKm*10);
 		tripBooking.setStatus(TripStatus.CONFIRMED);
 
-
-
-
+		customer.getTripBookingList().add(tripBooking);
 		customerRepository2.save(customer);
+
+		driver.getTripBookingList().add(tripBooking);
 		driverRepository2.save(driver);
 		tripBookingRepository2.save(tripBooking);
 
