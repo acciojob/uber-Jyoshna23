@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
 		try {
 			admin = adminRepository1.findById(adminId).get();
 			if (admin == null) {
-				throw new AdminNotFoundException("admin not found in the database.");
+				throw new Exception("admin not found in the database.");
 			}
 			admin.setPassword(password);
 
@@ -86,8 +86,4 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 }
-class AdminNotFoundException extends Exception {
-	AdminNotFoundException(String s) {
-		super(s);
-	}
-}
+
